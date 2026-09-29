@@ -1,0 +1,17 @@
+# O Caddy emite HTTPS automaticamente após o domínio apontar para esta VPS.
+# Portas 80 e 443 precisam estar acessíveis; ajuste DOMAIN no arquivo .env.
+{$DOMAIN} {
+    root * /srv
+    encode zstd gzip
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy strict-origin-when-cross-origin
+        X-Frame-Options SAMEORIGIN
+        -Server
+    }
+    file_server
+    handle_errors {
+        rewrite * /404.html
+        file_server
+    }
+}
